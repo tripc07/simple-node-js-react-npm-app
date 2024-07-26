@@ -12,7 +12,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 // Clone the repository
-                git branch: 'main', url: 'https://github.com/tripc07/simple-node-js-react-npm-app.git'
+                git branch: 'main', url: 'https://github.com/your-repo/simple-node-js-react-npm-app.git'
             }
         }
         stage('Install Dependencies') {
