@@ -9,7 +9,13 @@ pipeline {
         CI = 'true'
     }
     stages {
-        stage('Build') {
+        stage('Checkout') {
+            steps {
+                // Clone the repository
+                git branch: 'main', url: 'https://github.com/your-repo/simple-node-js-react-npm-app.git'
+            }
+        }
+        stage('Install Dependencies') {
             steps {
                 sh 'npm install'
             }
@@ -19,12 +25,36 @@ pipeline {
                 sh './jenkins/scripts/test.sh'
             }
         }
+        stage('Generate OpenAPI Documentation') {
+            steps {
+                script {
+                    // If specific commands are needed to generate OpenAPI docs, add them here.
+                    // Example: sh 'npm run generate-docs'
+                }
+            }
+        }
         stage('Deliver') {
             steps {
                 sh './jenkins/scripts/deliver.sh'
                 input message: 'Finished using the web site? (Click "Proceed" to continue)'
                 sh './jenkins/scripts/kill.sh'
             }
+        }
+        stage('Publish OpenAPI Documentation') {
+            steps {
+                script {
+                    // Example: Copy the OpenAPI documentation to an artifact directory
+                    sh 'mkdir -p docs'
+                    sh 'cp -r public/api-docs docs/'
+                    archiveArtifacts artifacts: 'docs/**'
+                }
+            }
+        }
+    }
+    post {
+        always {
+            // Clean workspace after build
+            cleanWs()
         }
     }
 }
