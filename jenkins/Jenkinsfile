@@ -30,6 +30,7 @@ pipeline {
                 script {
                     // If specific commands are needed to generate OpenAPI docs, add them here.
                     // Example: sh 'npm run generate-docs'
+                    sh 'echo "Generate OpenAPI Documentation"'
                 }
             }
         }
